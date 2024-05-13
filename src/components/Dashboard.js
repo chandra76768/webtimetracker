@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, IconButton } from '@mui/material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, IconButton, Button } from '@mui/material';
 import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { CSVLink } from 'react-csv'; // Import CSVLink component from react-csv
+import PDFExport from './PDFExport'; // Import the PDFExport component
 import './Dashboard.css'; // Import custom CSS file for styling
 
 function Dashboard({ onBackClick }) {
@@ -11,6 +13,7 @@ function Dashboard({ onBackClick }) {
   const [webActivities, setWebActivities] = useState([]);
   const [columns, setColumns] = useState([]);
   const [hideUser, setHideUser] = useState(true); // State to control user visibility
+  const [exportPDF, setExportPDF] = useState(false); // State to control PDF export
 
   useEffect(() => {
     // Fetch web activities data from the backend
@@ -61,12 +64,29 @@ function Dashboard({ onBackClick }) {
     setHideUser(!hideUser);
   };
 
+  const handleExportPDF = () => {
+    setExportPDF(true);
+  };
+
   return (
     <div className="dashboard-container">
       <IconButton onClick={onBackClick} className="back-button">
         <ArrowBackIcon />
       </IconButton>
       <h1 className="dashboard-title">Dashboard</h1>
+      <div className="dashboard-buttons">
+        <Button onClick={handleExportPDF} variant="contained" color="primary" className="export-button">
+          Export PDF
+        </Button>
+        <CSVLink data={webActivities} filename={"web_activities.csv"} className="export-button">
+          <Button variant="contained" color="primary">
+            Export CSV
+          </Button>
+        </CSVLink>
+        <IconButton onClick={handleHideUser} className="hide-button">
+          <VisibilityOffIcon />
+        </IconButton>
+      </div>
       <Paper className="dashboard-paper">
         <TableContainer className="dashboard-table-container">
           <Table stickyHeader aria-label="sticky table">
@@ -117,6 +137,7 @@ function Dashboard({ onBackClick }) {
           className="dashboard-pagination"
         />
       </Paper>
+      {exportPDF && <PDFExport webActivities={webActivities} />}
     </div>
   );
 }

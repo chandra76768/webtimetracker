@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Sites.css';
+import { TextField, Button, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 
 function Sites({ type }) {
     const [addSiteInput, setAddSiteInput] = useState('');
     const [removeSiteInput, setRemoveSiteInput] = useState('');
     const [siteList, setSiteList] = useState([]);
     const [unproductiveSites, setUnproductiveSites] = useState([]);
+    const [webActivitySites, setWebActivitySites] = useState([]);
 
     useEffect(() => {
         const savedSites = JSON.parse(localStorage.getItem(type)) || [];
@@ -14,8 +17,13 @@ function Sites({ type }) {
 
     useEffect(() => {
         const unproductiveSites = JSON.parse(localStorage.getItem('unproductive')) || {};
-        console.log(unproductiveSites)
         setUnproductiveSites(Object.keys(unproductiveSites));
+    }, []);
+
+    useEffect(() => {
+        const webActivity = JSON.parse(localStorage.getItem('today_domains')) || {};
+        const webActivitySites = Object.keys(webActivity);
+        setWebActivitySites(webActivitySites);
     }, []);
 
     const addSite = () => {
@@ -41,23 +49,63 @@ function Sites({ type }) {
     };
 
     return (
-        <div className="sites">
-            <form>
-                <input type="text" placeholder="Add site to list" value={addSiteInput} onChange={(e) => setAddSiteInput(e.target.value)} />
-                <button type="button" onClick={addSite}>Add</button>
+        <div className="sites-container">
+            <form className="form-container">
+                <FormControl fullWidth className="dropdown-container">
+                    <InputLabel id="add-site-label">Select Site to Add</InputLabel>
+                    <Select
+                        labelId="add-site-label"
+                        id="add-site-select"
+                        value={addSiteInput}
+                        onChange={(e) => setAddSiteInput(e.target.value)}
+                    >
+                        {webActivitySites.map((site, index) => (
+                            <MenuItem key={index} value={site}>{site}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                <input type="text" placeholder="Remove site from list" value={removeSiteInput} onChange={(e) => setRemoveSiteInput(e.target.value)} />
-                <button type="button" onClick={removeSite}>Remove</button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={addSite}
+                    endIcon={<AddCircleOutline />}
+                    className="action-button"
+                >
+                    Add
+                </Button>
+
+                <FormControl fullWidth className="dropdown-container">
+                    <InputLabel id="remove-site-label">Select Site to Remove</InputLabel>
+                    <Select
+                        labelId="remove-site-label"
+                        id="remove-site-select"
+                        value={removeSiteInput}
+                        onChange={(e) => setRemoveSiteInput(e.target.value)}
+                    >
+                        {siteList.map((site, index) => (
+                            <MenuItem key={index} value={site}>{site}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={removeSite}
+                    endIcon={<RemoveCircleOutline />}
+                    className="action-button"
+                >
+                    Remove
+                </Button>
             </form>
 
-            <dl>
+            <ul className="site-list">
                 {siteList.map((site, index) => (
-                    <div key={index}>
-                        <dt>{site}</dt>
-                        <dd onClick={() => handleSiteVisit(site)}>{site}</dd>
-                    </div>
+                    <li key={index} className="site-item" onClick={() => handleSiteVisit(site)}>
+                        {site}
+                    </li>
                 ))}
-            </dl>
+            </ul>
         </div>
     );
 }

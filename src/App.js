@@ -10,6 +10,8 @@ import Dashboard from './components/Dashboard';
 import SignUp from './components/Signup';
 import Login from './components/Login';
 import SignUpLoginPage from './components/SignupLoginPage';
+import SetLimit from './components/SetLimit';
+import Pomodoro from './components/Pomodoro';
 
 function App() {
     const [showDashboard, setShowDashboard] = useState(false);

@@ -1,30 +1,41 @@
-.sites {
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: medium;
-    line-height: 1.6;
+.sites-container {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
     padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-input {
-    height: 22px;
-    width: 80%;
-    margin-bottom: 15px;
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-button {
-    width: 15%;
-    background-color: azure;
+.input-field {
+    margin-bottom: 10px;
+}
+
+.action-button {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.site-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.site-item {
+    padding: 10px 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-bottom: 10px;
     cursor: pointer;
-    border-radius: 2.5px;
-    outline: 0;
-    box-shadow: 0px 2px 2px lightgray;
-    transition: ease background-color 250ms;
-    font-weight: bold;
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: 16px;
-    display: inline-block;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: lightgray;
+.site-item:hover {
+    background-color: #f0f0f0;
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './WebAct.css';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 function WebAct() {
     const [siteList, setSiteList] = useState([]);
@@ -36,14 +37,24 @@ function WebAct() {
 
     return (
         <div className="webact">
-            <dl>
-                {siteList.map((site) =>
-                    <div key={site}>
-                        <dt>{site}</dt>
-                        <dd>{formatSeconds(JSON.parse(localStorage.getItem('today_domains'))[site])}</dd>
-                    </div>
-                )}
-            </dl>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Website</TableCell>
+                            <TableCell>Time Spent</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {siteList.map((site) => (
+                            <TableRow key={site}>
+                                <TableCell>{site}</TableCell>
+                                <TableCell>{formatSeconds(JSON.parse(localStorage.getItem('today_domains'))[site])}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </div>
     );
 }
